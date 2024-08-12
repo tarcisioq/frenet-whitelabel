@@ -1,4 +1,4 @@
-<center>This is a not official sdk for Frenet WhiteLabel API</center>
+<h4 align="center">This is a not official sdk for Frenet WhiteLabel API</h4>
 <h4 align="center">Developed by <a href="https://www.iset.com.br" target="_blank">Tarcísio Quaresma</a></h4>
 
 [![GitHub issues](https://img.shields.io/github/issues-raw/rocketseat/react-native-template-rocketseat-basic.svg)](https://github.com/tarcisioq/frenet-whitelabel/issues)
