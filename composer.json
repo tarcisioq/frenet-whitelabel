@@ -1,9 +1,9 @@
 {
   "name": "tarcisioq/frenet-whitelabel-sdk",
-  "description": "SDK for Frenet WhiteLabel API",
+  "description": "Unofficial SDK for Frenet WhiteLabel API",
   "type": "package",
   "license": "MIT",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "authors": [{
     "name": "Tarcisio Quaresma",
     "homepage": "https://github.com/tarcisioq",

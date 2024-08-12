@@ -3,6 +3,7 @@ namespace Frenet\Services;
 
 use Frenet\Http\Client;
 use Frenet\Exceptions\CarrierException;
+use Frenet\Services\Carrier;
 
 class Carriers extends BaseService {
     private $client;
@@ -31,7 +32,12 @@ class Carriers extends BaseService {
      */
     private function processGetServicesResponse(array $response) {
         if (isset($response['shippingServices'])) {
-            return $response['shippingServices'];
+            $carriers = [];
+            foreach ($response['ShippingServices'] as $carrierData) {
+                $carrier = new Carrier($carrierData);
+                if ($carrier->isEnabled()) $carriers[] = $carrier;
+            }
+            return $carriers;
         }
 
         if (isset($response['Message'])) {
