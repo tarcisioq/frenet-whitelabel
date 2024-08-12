@@ -13,7 +13,7 @@ class Carriers extends BaseService {
     }
 
     /**
-     * Obtém todos os serviços de transporte.
+     * ObtÃ©m todos os serviÃ§os de transporte.
      *
      * @return array
      * @throws \Frenet\Exceptions\CarrierException
@@ -24,7 +24,7 @@ class Carriers extends BaseService {
     }
 
     /**
-     * Processa a resposta da API para a requisição GET /carriers/services.
+     * Processa a resposta da API para a requisiÃ§Ã£o GET /carriers/services.
      *
      * @param array $response
      * @return array
@@ -33,7 +33,7 @@ class Carriers extends BaseService {
     private function processGetServicesResponse(array $response) {
         if (isset($response['shippingServices'])) {
             $carriers = [];
-            foreach ($response['ShippingServices'] as $carrierData) {
+            foreach ($response['shippingServices'] as $carrierData) {
                 $carrier = new Carrier($carrierData);
                 if ($carrier->isEnabled()) $carriers[] = $carrier;
             }
@@ -50,7 +50,7 @@ class Carriers extends BaseService {
     }
 
     /**
-     * Formata erros em uma string legível.
+     * Formata erros em uma string legÃ­vel.
      *
      * @param array $errors
      * @return string

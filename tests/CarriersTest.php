@@ -12,7 +12,7 @@ class CarriersTest extends TestCase
 
     protected function setUp(): void
     {
-        $config = new Config('apikey', 'partnerToken', 'sandbox');
+        $config = new Config('apiKey', 'partnerToken', 'sandbox');
         $client = new Client($config->getConfigurationUri(), $config->getApiKey(), $config->getPartnerToken());
         $this->carriers = new Carriers($client);
     }
@@ -22,7 +22,7 @@ class CarriersTest extends TestCase
         $services = $this->carriers->getServices();
         $this->assertIsArray($services);
         $this->assertGreaterThanOrEqual(1, count($services));
-        $this->assertArrayHasKey('serviceCode', $services[0]);
+        $this->assertInstanceOf(\Frenet\Services\Carrier::class, $services[0]);
     }
 
 }

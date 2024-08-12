@@ -14,14 +14,14 @@ class Carrier
 
     public function __construct(array $data)
     {
-        $this->serviceCode = $data['ServiceCode'] ?? '';
-        $this->serviceDescription = $data['ServiceDescription'] ?? '';
-        $this->carrier = $data['Carrier'] ?? '';
-        $this->carrierCode = $data['CarrierCode'] ?? '';
-        $this->enabled = (bool)($data['Enabled'] ?? false);
-        $this->declaredValue = (bool)($data['DeclaredValue'] ?? false);
-        $this->receiptNotification = (bool)($data['ReceiptNotification'] ?? false);
-        $this->inPersonDelivery = (bool)($data['InPersonDelivery'] ?? false);
+        $this->serviceCode = $data['serviceCode'] ?? '';
+        $this->serviceDescription = $data['serviceDescription'] ?? '';
+        $this->carrier = $data['carrier'] ?? '';
+        $this->carrierCode = $data['carrierCode'] ?? '';
+        $this->enabled = (bool)($data['enabled'] ?? false);
+        $this->declaredValue = (bool)($data['declaredValue'] ?? false);
+        $this->receiptNotification = (bool)($data['receiptNotification'] ?? false);
+        $this->inPersonDelivery = (bool)($data['inPersonDelivery'] ?? false);
     }
 
     public function getServiceCode(): string
