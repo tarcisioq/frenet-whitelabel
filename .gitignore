@@ -1,0 +1,7 @@
+.idea
+.idea/*
+.idea/vcs.xml
+vendor
+.env
+.DS_Store
+composer.lock
