@@ -132,14 +132,14 @@ class Shipments extends BaseService {
     private function validateShipmentParams(array $params) {
         $requiredParams = [
 //            'shipmentId' => 'numeric',
-            'trackingNotificationUrl' => 'string',
-            'statusNotificationUrl' => 'string',
-            'branchCode' => 'string',
+//            'trackingNotificationUrl' => 'string',
+//            'statusNotificationUrl' => 'string',
+//            'branchCode' => 'string',
             'order' => 'array',
             'volumes' => 'array',
             'quotation' => 'array',
-            'shipmentStatus' => 'numeric',
-            'settings' => 'array'
+//            'shipmentStatus' => 'numeric',
+//            'settings' => 'array'
         ];
 
         $this->validateParams($params, $requiredParams);
@@ -153,18 +153,19 @@ class Shipments extends BaseService {
             'id' => 'string',
             'value' => 'numeric',
             'created' => 'string',
-            'useFrenetRegistration' => 'boolean',
+//            'useFrenetRegistration' => 'boolean',
             'items' => 'array',
             'from' => 'array',
             'to' => 'array',
-            'invoice' => 'array'
+//            'invoice' => 'array'
         ];
 
         $this->validateParams($order, $requiredOrderParams);
         $this->validateItems($order['items']);
         $this->validateFrom($order['from']);
         $this->validateTo($order['to']);
-        $this->validateInvoice($order['invoice']);
+        if (isset($order['invoice']))
+            $this->validateInvoice($order['invoice']);
     }
 
     private function validateItems(array $items) {
@@ -172,18 +173,18 @@ class Shipments extends BaseService {
             'orderId' => 'string',
             'itemId' => 'string',
             'productId' => 'string',
-            'productOptions' => 'string',
-            'productType' => 'string',
+//            'productOptions' => 'string',
+//            'productType' => 'string',
             'weight' => 'numeric',
             'length' => 'numeric',
             'height' => 'numeric',
             'width' => 'numeric',
             'quantity' => 'numeric',
             'price' => 'numeric',
-            'isFragile' => 'boolean',
+//            'isFragile' => 'boolean',
             'productName' => 'string',
             'sku' => 'string',
-            'category' => 'string'
+//            'category' => 'string'
         ];
 
         $this->validateArrayParams($items, $requiredItemParams);
@@ -192,10 +193,10 @@ class Shipments extends BaseService {
     private function validateFrom(array $from) {
         $requiredFromParams = [
             'name' => 'string',
-            'phone' => 'string',
-            'cellphone' => 'string',
+//            'phone' => 'string',
+//            'cellphone' => 'string',
             'document' => 'string',
-            'ie' => 'string',
+//            'ie' => 'string',
             'address' => 'array',
         ];
         $this->validateParams($from, $requiredFromParams);
@@ -205,10 +206,10 @@ class Shipments extends BaseService {
     private function validateTo(array $to) {
         $requiredToParams = [
             'name' => 'string',
-            'phone' => 'string',
-            'cellphone' => 'string',
+//            'phone' => 'string',
+//            'cellphone' => 'string',
             'document' => 'string',
-            'ie' => 'string',
+//            'ie' => 'string',
             'address' => 'array',
         ];
         $this->validateParams($to, $requiredToParams);
@@ -222,9 +223,9 @@ class Shipments extends BaseService {
             'street' => 'string',
             'addressNumber' => 'string',
             'addressComplement' => 'string',
-            'addressQuarter' => 'string',
+//            'addressQuarter' => 'string',
             'addressState' => 'string',
-            'postalBoxCode' => 'string',
+//            'postalBoxCode' => 'string',
             'country' => 'string'
         ];
 
@@ -269,11 +270,12 @@ class Shipments extends BaseService {
             'carrierCode' => 'string',
             'shippingPrice' => 'numeric',
             'shippingCompetitorPrice' => 'numeric',
-            'services' => 'array'
+//            'services' => 'array'
         ];
 
         $this->validateParams($quotation, $requiredQuotationParams);
-        $this->validateServices($quotation['services']);
+        if (isset($quotation['services']))
+            $this->validateServices($quotation['services']);
     }
 
     private function validateServices(array $services) {
