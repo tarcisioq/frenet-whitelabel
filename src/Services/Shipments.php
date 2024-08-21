@@ -25,6 +25,12 @@ class Shipments extends BaseService {
         return $this->processCreateShipmentResponse($response);
     }
 
+    public function createShipmentOneClick(array $params) {
+        $this->validateShipmentParams($params);
+        $response = $this->client->request('POST', 'shipments/oneclick', [$params]);
+        return $this->processCreateShipmentResponse($response);
+    }
+
     /**
      * Busca um shipment pelo ID.
      *
