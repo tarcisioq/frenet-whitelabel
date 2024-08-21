@@ -3,7 +3,7 @@
   "description": "Unofficial SDK for Frenet WhiteLabel API",
   "type": "package",
   "license": "MIT",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "authors": [{
     "name": "Tarcisio Quaresma",
     "homepage": "https://github.com/tarcisioq",
