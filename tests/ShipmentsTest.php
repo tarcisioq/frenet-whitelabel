@@ -12,7 +12,7 @@ class ShipmentsTest extends TestCase
 
     protected function setUp(): void
     {
-        $config = new Config('apikey', 'partnerToken', 'sandbox');
+        $config = new Config('apiKey', 'partnerToken', 'sandbox');
         $client = new Client($config->getBaseUri(), $config->getApiKey(), $config->getPartnerToken());
         $this->shipments = new Shipments($client);
         $this->shipmentId = '';
@@ -126,7 +126,7 @@ class ShipmentsTest extends TestCase
             ]
         ];
 
-        $response = $this->shipments->createShipment($params);
+        $response = $this->shipments->createShipmentOneClick($params);
         // Verifica se o ID do shipment foi retornado
         $this->assertIsArray($response);
         $this->assertArrayHasKey('shipmentId', $response);

@@ -20,9 +20,25 @@ class Shipments extends BaseService {
      * @throws \Frenet\Exceptions\ValidationException
      */
     public function createShipment(array $params) {
-        $this->validateShipmentParams($params);
-        $response = $this->client->request('POST', 'shipments', [$params]);
-        return $this->processCreateShipmentResponse($response);
+        try {
+            $this->validateShipmentParams($params);
+            $response = $this->client->request('POST', 'shipments', [$params]);
+            return $this->processCreateShipmentResponse($response);
+        } catch (ClientException $e) {
+            echo "entro..";
+            // Captura o código de status HTTP
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            // Captura o corpo da resposta, que geralmente é onde a mensagem de erro está
+            $errorBody = $e->getResponse()->getBody()->getContents();
+            $errorData = json_decode($errorBody, true);
+
+            // Verifica se a resposta contém uma mensagem de erro
+            $errorMessage = $errorData['message'] ?? 'An error occurred';
+            $details = $this->formatErrors($errorData['details'] ?? []);
+
+            throw new ShipmentException("Error ({$statusCode}): {$errorMessage}. Details: {$details}");
+        }
     }
 
     public function createShipmentOneClick(array $params) {
@@ -113,21 +129,6 @@ class Shipments extends BaseService {
         throw new ShipmentException('Unknown response structure.');
     }
 
-    /**
-     * Formata erros em uma string legível.
-     *
-     * @param array $errors
-     * @return string
-     */
-    private function formatErrors(array $errors) {
-        $formatted = [];
-        foreach ($errors as $error) {
-            $code = $error['code'] ?? 'unknown';
-            $message = $error['message'] ?? 'No message provided';
-            $formatted[] = "Code {$code}: {$message}";
-        }
-        return implode('; ', $formatted);
-    }
 
     /**
      * Valida os parâmetros para a criação de um shipment.

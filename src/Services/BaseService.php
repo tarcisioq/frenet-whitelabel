@@ -61,4 +61,14 @@ abstract class BaseService {
             $this->validateParams($item, $requiredParams);
         }
     }
+
+    protected function formatErrors(array $errors) {
+        $formatted = [];
+        foreach ($errors as $error) {
+            $code = $error['code'] ?? 'unknown';
+            $message = $error['message'] ?? 'No message provided';
+            $formatted[] = "Code {$code}: {$message}";
+        }
+        return implode('; ', $formatted);
+    }
 }
