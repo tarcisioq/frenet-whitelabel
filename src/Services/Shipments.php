@@ -269,7 +269,7 @@ class Shipments extends BaseService {
             'carrier' => 'string',
             'carrierCode' => 'string',
             'shippingPrice' => 'numeric',
-            'shippingCompetitorPrice' => 'numeric',
+//            'shippingCompetitorPrice' => 'numeric',
 //            'services' => 'array'
         ];
 
