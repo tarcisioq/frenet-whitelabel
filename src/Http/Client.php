@@ -34,7 +34,6 @@ class Client {
             ]);
             return json_decode($response->getBody(), true);
         } catch (ClientException $e) {
-            echo "entro..";
             // Captura o código de status HTTP
             $statusCode = $e->getResponse()->getStatusCode();
 
@@ -56,7 +55,6 @@ class Client {
 
             // Verifica se a resposta contém uma mensagem de erro
             $errorMessage = $errorData['message'] ?? 'An error occurred';
-            print_r($errorData);
             $details = $this->formatErrors($errorData['details'] ?? []);
 
             throw new FrenetException("{$errorMessage} Details: {$details}");
