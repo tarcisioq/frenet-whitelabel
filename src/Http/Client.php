@@ -1,6 +1,7 @@
 <?php
 namespace Frenet\Http;
 
+use Frenet\Exceptions\ShipmentException;
 use GuzzleHttp\Client as GuzzleClient;
 use Frenet\Exceptions\FrenetException;
 
@@ -32,8 +33,43 @@ class Client {
                 'json' => $params
             ]);
             return json_decode($response->getBody(), true);
+        } catch (ClientException $e) {
+            echo "entro..";
+            // Captura o código de status HTTP
+            $statusCode = $e->getResponse()->getStatusCode();
+
+            // Captura o corpo da resposta, que geralmente é onde a mensagem de erro está
+            $errorBody = $e->getResponse()->getBody()->getContents();
+            $errorData = json_decode($errorBody, true);
+
+            // Verifica se a resposta contém uma mensagem de erro
+            $errorMessage = $errorData['message'] ?? 'An error occurred';
+            $details = $this->formatErrors($errorData['details'] ?? []);
+
+            throw new ShipmentException("Error ({$statusCode}): {$errorMessage}. Details: {$details}");
+
         } catch (\Exception $e) {
-            throw new FrenetException($e->getMessage());
+            $statusCode = $e->getResponse()->getStatusCode();
+            // Captura o corpo da resposta, que geralmente é onde a mensagem de erro está
+            $errorBody = $e->getResponse()->getBody()->getContents();
+            $errorData = json_decode($errorBody, true);
+
+            // Verifica se a resposta contém uma mensagem de erro
+            $errorMessage = $errorData['message'] ?? 'An error occurred';
+            print_r($errorData);
+            $details = $this->formatErrors($errorData['details'] ?? []);
+
+            throw new FrenetException("{$errorMessage} Details: {$details}");
+//            throw new FrenetException($e->getMessage());
         }
+    }
+    protected function formatErrors(array $errors) {
+        $formatted = [];
+        foreach ($errors as $error) {
+            $code = $error['code'] ?? 'unknown';
+            $message = $error['message'] ?? 'No message provided';
+            $formatted[] = "({$code}) - {$message}";
+        }
+        return implode('; ', $formatted);
     }
 }
