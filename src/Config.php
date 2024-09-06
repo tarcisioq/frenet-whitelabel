@@ -23,12 +23,12 @@ class Config {
     public function getConfigurationUri() {
         return $this->environment === 'sandbox' ?
             'https://whitelabel-configuration-hml.frenet.dev/v1/' :
-            'https://whitelabel-configuration-hml.frenet.dev/v1/';
+            'https://whitelabel-configuration.frenet.com.br/v1/';
     }
 
     public function getBaseUri() {
         return $this->environment === 'sandbox' ?
             'https://whitelabel-hml.frenet.dev/v1/' :
-            'https://production-url.frenet.dev/v1/';
+            'https://whitelabel.frenet.com.br/v1/';
     }
 }
