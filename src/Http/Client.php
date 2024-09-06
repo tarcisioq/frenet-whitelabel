@@ -54,12 +54,14 @@ class Client {
             $errorData = json_decode($errorBody, true);
 
             // Verifica se a resposta contém uma mensagem de erro
-            $errorMessage = $errorData['message'] ?? 'An error occurred';
             $details = $this->formatErrors($errorData['details'] ?? []);
 
-            if (strpos($details,"acesso negado para o cliente")) $details = mb_convert_encoding("Acesso negado. Credenciais inválidas.", 'UTF-8', 'ISO-8859-1');
+            if (strpos($details,"acesso negado para o cliente")) {
+                $details = mb_convert_encoding("Acesso negado. Credenciais inválidas.", 'UTF-8', 'ISO-8859-1');
+            }
+            $errorMessage = $errorData['message'] ?? $details;
 
-            throw new FrenetException("{$errorMessage} Details: {$details}");
+            throw new FrenetException($errorMessage);
 //            throw new FrenetException($e->getMessage());
         }
     }
