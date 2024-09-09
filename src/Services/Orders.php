@@ -23,13 +23,13 @@ class Orders extends BaseService {
     public function createOrder(array $params) {
         $this->validateShipmentParams($params);
         $response = $this->client->request('POST', 'orders', [$params]);
-        return $this->processCreateShipmentResponse($response);
+        return $this->processOrderShipmentResponse($response);
     }
 
     public function createOrderOneClick(array $params) {
         $this->validateShipmentParams($params);
         $response = $this->client->request('POST', 'orders/oneclick', [$params]);
-        return $this->processCreateShipmentResponse($response);
+        return $this->processOrderShipmentResponse($response);
     }
 
     /**
@@ -79,7 +79,7 @@ class Orders extends BaseService {
      * @return array
      * @throws \Frenet\Exceptions\ShipmentException
      */
-    private function processCreateShipmentResponse(array $response) {
+    private function processOrderShipmentResponse(array $response) {
         if (isset($response['statusBatch'])) {
             $items = $response['items'] ?? [];
             if (empty($items)) {
@@ -101,6 +101,8 @@ class Orders extends BaseService {
                     'validThrough' => $item['validThrough'],
                     'status' => $item['shipmentStatus']
                 ];
+            } elseif ($response['statusBatch'] === 'Erro') {
+                throw new ShipmentException('statusBatch = Error');
             }
         }
 
@@ -109,8 +111,6 @@ class Orders extends BaseService {
             $details = $this->formatErrors($response['error']['details'] ?? []);
             throw new ShipmentException("Shipment creation failed: {$errorMessage}. Details: {$details}");
         }
-
-
         throw new ShipmentException('Unknown response structure.');
     }
 
