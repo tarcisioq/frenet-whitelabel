@@ -271,12 +271,11 @@ class Orders extends BaseService {
     }
 
     private function validateServices(array $services) {
-        $requiredServices = [
-            'declaredValue' => 'boolean',
-            'receiptNotification' => 'boolean',
-            'ownHand' => 'boolean'
-        ];
-
-        $this->validateParams($services, $requiredServices);
+        if (isset($services["declaredValue"]))
+        $this->validateParams($services, ['declaredValue' => 'boolean']);
+        if (isset($services["receiptNotification"]))
+            $this->validateParams($services, ['receiptNotification' => 'boolean']);
+        if (isset($services["ownHand"]))
+            $this->validateParams($services, ['ownHand' => 'boolean']);
     }
 }
