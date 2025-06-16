@@ -34,35 +34,39 @@ class Client {
             ]);
             return json_decode($response->getBody(), true);
         } catch (ClientException $e) {
-            // Captura o código de status HTTP
-            $statusCode = $e->getResponse()->getStatusCode();
-
-            // Captura o corpo da resposta, que geralmente é onde a mensagem de erro está
-            $errorBody = $e->getResponse()->getBody()->getContents();
-            $errorData = json_decode($errorBody, true);
-
-            // Verifica se a resposta contém uma mensagem de erro
-            $errorMessage = $errorData['message'] ?? 'An error occurred';
-            $details = $this->formatErrors($errorData['details'] ?? []);
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $statusCode = $response->getStatusCode();
+                $errorBody = $response->getBody()->getContents();
+                $errorData = json_decode($errorBody, true);
+                $errorMessage = $errorData['message'] ?? 'An error occurred';
+                $details = $this->formatErrors($errorData['details'] ?? []);
+            } else {
+                // Caso nÃ£o haja resposta, vocÃª pode definir um cÃ³digo padrÃ£o ou tratar de forma especÃ­fica
+                $statusCode = null;
+                $errorMessage = $e->getMessage();
+                $details = '';
+            }
 
             throw new ShipmentException("Error ({$statusCode}): {$errorMessage}. Details: {$details}");
-
         } catch (\Exception $e) {
-            $statusCode = $e->getResponse()->getStatusCode();
-            // Captura o corpo da resposta, que geralmente é onde a mensagem de erro está
-            $errorBody = $e->getResponse()->getBody()->getContents();
-            $errorData = json_decode($errorBody, true);
-
-            // Verifica se a resposta contém uma mensagem de erro
-            $details = $this->formatErrors($errorData['details'] ?? []);
-
-            if (strpos($details,"acesso negado para o cliente")) {
-                $details = mb_convert_encoding("Acesso negado. Credenciais inválidas.", 'UTF-8', 'ISO-8859-1');
+            if (method_exists($e, 'getResponse') && $e->hasResponse()) {
+                $response = $e->getResponse();
+                $statusCode = $response->getStatusCode();
+                $errorBody = $response->getBody()->getContents();
+                $errorData = json_decode($errorBody, true);
+                $details = $this->formatErrors($errorData['details'] ?? []);
+                if (strpos($details, "acesso negado para o cliente")) {
+                    $details = mb_convert_encoding("Acesso negado. Credenciais invÃ¡lidas.", 'UTF-8', 'ISO-8859-1');
+                }
+                $errorMessage = $errorData['message'] ?? $details;
+            } else {
+                $statusCode = null;
+                $errorMessage = $e->getMessage();
+                $details = '';
             }
-            $errorMessage = $errorData['message'] ?? $details;
 
             throw new FrenetException($errorMessage);
-//            throw new FrenetException($e->getMessage());
         }
     }
     protected function formatErrors(array $errors) {
